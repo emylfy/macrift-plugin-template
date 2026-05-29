@@ -1,0 +1,5 @@
+Static config files your plugin ships go here (e.g. settings.json, agent
+markdown files, hooks scripts, dotfile templates). Referenced from
+handlers/*.sh as "$_PLUGIN_DIR/config/<filename>".
+
+Delete this .gitkeep once you add real content.

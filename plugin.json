@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/emylfy/macrift/main/schemas/plugin.schema.json",
+
+  "name": "your-plugin-name",
+  "version": "0.1.0",
+  "description": "One-line summary of what this plugin does (max 200 chars, shown in `macrift plugin list`).",
+  "author": "your-github-handle",
+  "license": "MIT",
+  "homepage": "https://github.com/your-github-handle/your-plugin-name",
+
+  "compat": {
+    "macrift_min": "26.06",
+    "macrift_api": 1
+  },
+
+  "menu": {
+    "section": "Customize",
+    "entry": "Your plugin",
+    "function": "your_plugin_menu"
+  }
+}

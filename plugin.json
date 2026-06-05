@@ -14,7 +14,7 @@
   },
 
   "menu": {
-    "section": "Customize",
+    "section": "Your section",
     "entry": "Your plugin",
     "function": "your_plugin_menu"
   }

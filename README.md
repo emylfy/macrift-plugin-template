@@ -38,18 +38,41 @@ Find-and-replace these placeholder strings across the repo:
 | `your-github-handle`  | Your GitHub handle                 |
 | `your_plugin_menu`    | The bash function name             |
 | `Your plugin`         | The user-visible menu label        |
+| `Your section`        | The top-level menu section (or use `menu.parent` instead — see below) |
 
 Quick one-liner:
 
 ```sh
-PLUGIN=your-plugin-name HANDLE=your-handle FN=your_plugin_menu LABEL="Your plugin"
+PLUGIN=your-plugin-name HANDLE=your-handle FN=your_plugin_menu LABEL="Your plugin" SECTION="Your section"
 LC_ALL=C find . -type f \( -name '*.sh' -o -name '*.json' -o -name '*.md' \) \
   -not -path './.git/*' -exec sed -i.bak \
     -e "s/your-plugin-name/$PLUGIN/g" \
     -e "s/your-github-handle/$HANDLE/g" \
     -e "s/your_plugin_menu/$FN/g" \
-    -e "s/Your plugin/$LABEL/g" {} \;
+    -e "s/Your plugin/$LABEL/g" \
+    -e "s/Your section/$SECTION/g" {} \;
 find . -name '*.bak' -delete
+```
+
+### Where your entry lands
+
+The `menu` block takes **one** of two placement keys:
+
+- `menu.section` — creates (or reuses) a **top-level** entry in macrift's main menu.
+  Use this for a feature that deserves its own spot. This is the template default.
+- `menu.parent` — injects your entry **into** a built-in submenu instead, one of
+  `tweaks`, `apps`, `customize`, `security`, `cleanup`. Use this when your plugin
+  extends an existing category (e.g. `"parent": "customize"` puts it at the bottom
+  of the **Customize** menu). Requires `compat.macrift_min` ≥ `26.06`.
+
+Set exactly one. To inject into a submenu, swap the `section` line for `parent`:
+
+```json
+  "menu": {
+    "parent": "customize",
+    "entry": "Your plugin",
+    "function": "your_plugin_menu"
+  }
 ```
 
 ## 3. Write your logic
@@ -69,7 +92,7 @@ Open `handlers/example.sh` and replace the stubs. The public API (helpers macrif
 ```sh
 mkdir -p ~/.macrift/plugins
 ln -s "$(pwd)" ~/.macrift/plugins/your-plugin-name
-macrift            # your entry appears under its declared section
+macrift            # your entry appears under its declared section (or inside the targeted submenu)
 macrift plugin list
 macrift plugin lint your-plugin-name   # verify against do-not-do rules
 ```
